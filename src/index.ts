@@ -1,4 +1,6 @@
-import { Application, Assets, Container, Sprite } from 'pixi.js'
+import { Application, Assets } from 'pixi.js'
+import { Scene } from './Scene';
+//import { assets } from './assets';
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -38,23 +40,10 @@ window.dispatchEvent(new Event("resize"));
 Assets.add("militar", "./militar.png");
 Assets.add("mortero", "./mortero.png");
 
+//Assets.add(assets[0][0], assets[0][1]);
+//Assets.add(assets[1][0], assets[1][1]);
+
 Assets.load(["militar", "mortero"]).then(() => {
-	
-	const militar: Sprite = Sprite.from("militar");
-	militar.position.set(120,140);
-	militar.scale.set(1.3, 1.3);
-	
-	const mortero: Sprite = Sprite.from("mortero");
-	mortero.position.set(505,192);
-	mortero.scale.set(0.1, 0.1);
-	mortero.angle = 40;
-
-	const militarDisparando: Container = new Container();
-	militarDisparando.addChild(militar);
-	militarDisparando.addChild(mortero);
-	militarDisparando.scale.set(0.8,0.8);
-	militarDisparando.position.set(-150, 75);
-	militarDisparando.angle = -5;
-
-	app.stage.addChild(militarDisparando);
+	const myScene = new Scene;
+	app.stage.addChild(myScene);
 });
