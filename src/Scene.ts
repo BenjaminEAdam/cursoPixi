@@ -1,5 +1,6 @@
-import { Text, AnimatedSprite, Container, Graphics, Texture, NineSlicePlane } from "pixi.js";
+import { Text, AnimatedSprite, Container, Graphics, Texture} from "pixi.js";
 import { MilitarDisparando } from "./MilitarDisparando";
+import { UserInterface } from "./UserInterface";
 
 export class Scene extends Container{
 
@@ -53,16 +54,8 @@ export class Scene extends Container{
         myText.position.set(925, 650);
         this.addChild(myText);
 
-        const myPanel = new NineSlicePlane(
-            Texture.from("pergamino4"),
-            50,
-            50,
-            50,
-            50
-        );
-        myPanel.position.set(400,10);
-        myPanel.width = 550;
-        myPanel.height = 650;
-        this.addChild(myPanel);
+        const userInterface = new UserInterface();
+        userInterface.position.set(400,10);
+        this.addChild(userInterface);
     }
 }

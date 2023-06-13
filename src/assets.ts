@@ -11,8 +11,10 @@ export const assets = {
     morteroPosicion7: "./morteroPosicion7.png",
     morteroPosicion8: "./morteroPosicion8.png",
     
-    pergamino1: "./pergamino1.png",
-    pergamino2: "./pergamino2.png",
-    pergamino3: "./pergamino3.png",
     pergamino4: "./pergamino4.png",
+    estrella: "./estrella.png",
+    cinta: "./cinta.png",
+    botonContinuar: "./botonContinuar.png",
+    botonReintentar: "./botonReintentar.png",
+
 };
