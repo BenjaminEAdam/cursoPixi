@@ -10,9 +10,9 @@ export class MilitarDisparando extends Container{
 	    militar.scale.set(1.3, 1.3);
 	
         const mortero: Sprite = Sprite.from("mortero");
-        mortero.position.set(505,192);
-        mortero.scale.set(0.1, 0.1);
-        mortero.angle = 40;
+        mortero.position.set(505,205);
+        mortero.scale.set(0.075, 0.075);
+        mortero.angle = 43;
 
         this.addChild(militar);
         this.addChild(mortero);

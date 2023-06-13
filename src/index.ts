@@ -1,5 +1,6 @@
 import { Application, Assets } from 'pixi.js'
 import { Scene } from './Scene';
+import { assets } from './assets';
 //import { assets } from './assets';
 
 const app = new Application({
@@ -37,13 +38,9 @@ window.addEventListener("resize", ()=>{
 });
 window.dispatchEvent(new Event("resize"));
 
-Assets.add("militar", "./militar.png");
-Assets.add("mortero", "./mortero.png");
+Assets.addBundle("myAssets", assets);
 
-//Assets.add(assets[0][0], assets[0][1]);
-//Assets.add(assets[1][0], assets[1][1]);
-
-Assets.load(["militar", "mortero"]).then(() => {
+Assets.loadBundle(["myAssets"]).then(() => {
 	const myScene = new Scene;
 	app.stage.addChild(myScene);
 });
