@@ -1,6 +1,10 @@
 import { Container, NineSlicePlane, Sprite, Texture, Text, Graphics} from "pixi.js";
+import { Button } from "./Interfaz/Button";
 
 export class UserInterface extends Container{
+
+    private botonContinuar: Button;
+    private botonReintentar: Button;
 
     constructor(){
         super();
@@ -27,15 +31,23 @@ export class UserInterface extends Container{
         myStarRight.width = 90;
         myStarRight.position.set(325,145);
 
-        const botonContinuar = Sprite.from("botonContinuar");
-        botonContinuar.height=45;
-        botonContinuar.width=130;
-        botonContinuar.position.set(282,497);
+        this.botonContinuar = new Button(
+            Texture.from("botonContinuar"), 
+            Texture.from("botonContinuarPresionado"), 
+            Texture.from("botonContinuarSeleccionado"),
+            this.onButtonClick.bind(this));
+        this.botonContinuar.height=45;
+        this.botonContinuar.width=130;
+        this.botonContinuar.position.set(282,497);
 
-        const botonReintentar = Sprite.from("botonReintentar");
-        botonReintentar.height=45;
-        botonReintentar.width=130;
-        botonReintentar.position.set(138,497);
+        this.botonReintentar = new Button(
+            Texture.from("botonReintentar"),
+            Texture.from("botonReintentarPresionado"),
+            Texture.from("botonReintentarSeleccionado"),
+            this.onButtonClick.bind(this));
+        this.botonReintentar.height=45;
+        this.botonReintentar.width=130;
+        this.botonReintentar.position.set(138,497);
 
         const cinta = Sprite.from("cinta");
         cinta.height = 80;
@@ -133,8 +145,8 @@ export class UserInterface extends Container{
         this.addChild(myStarLeft);
         this.addChild(myStarRight);
         this.addChild(cinta);
-        this.addChild(botonContinuar);
-        this.addChild(botonReintentar);
+        this.addChild(this.botonContinuar);
+        this.addChild(this.botonReintentar);
         this.addChild(textLevel);
         this.addChild(textComplete);
         this.addChild(textScore);
@@ -143,6 +155,10 @@ export class UserInterface extends Container{
         this.addChild(myRectangleRecord);
         this.addChild(textNext);
         this.addChild(textRetry);
+    }
+
+    private onButtonClick():void{
+        console.log("Button click!", this);
     }
 
 }
