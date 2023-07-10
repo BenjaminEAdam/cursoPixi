@@ -1,6 +1,7 @@
 import { Text, AnimatedSprite, Container, Graphics, Texture} from "pixi.js";
 import { MilitarDisparando } from "./MilitarDisparando";
-import { UserInterface } from "./UserInterface";
+import { UserInterfaceButton } from "./UserInterfaceButton";
+import { UserInterfaceKeyboard } from "./UserInterfaceKeyboard";
 
 export class Scene extends Container{
 
@@ -10,8 +11,8 @@ export class Scene extends Container{
 
         const militarDisparando: MilitarDisparando = new MilitarDisparando();
 
-        militarDisparando.scale.set(0.8,0.8);
-        militarDisparando.position.set(-150, 75);
+        militarDisparando.scale.set(0.3,0.3);
+        militarDisparando.position.set(-50, 575);
         militarDisparando.angle = -5;
 
         this.addChild(militarDisparando);
@@ -54,8 +55,13 @@ export class Scene extends Container{
         myText.position.set(925, 650);
         this.addChild(myText);
 
-        const userInterface = new UserInterface();
-        userInterface.position.set(400,10);
-        this.addChild(userInterface);
+        const userInterfaceButton = new UserInterfaceButton();
+        userInterfaceButton.position.set(100,10);
+        this.addChild(userInterfaceButton);
+
+        const userInterfaceKeyboard = new UserInterfaceKeyboard();
+        userInterfaceKeyboard.position.set(600, 10);
+        this.addChild(userInterfaceKeyboard);
+
     }
 }
