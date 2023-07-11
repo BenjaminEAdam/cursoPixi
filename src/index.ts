@@ -1,5 +1,5 @@
 import { Application, Assets } from 'pixi.js'
-import { Scene } from './Scene';
+import { Scene } from './Scenes/Scene';
 import { assets } from './assets';
 import { Keyboard } from './Utils/Keyboard';
 

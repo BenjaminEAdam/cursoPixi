@@ -1,8 +1,10 @@
-import { Container, NineSlicePlane, Sprite, Texture, Text, Graphics, AnimatedSprite} from "pixi.js";
-import { Keyboard } from "./Utils/Keyboard";
+import { Container, NineSlicePlane, Sprite, Texture, Text, Graphics, AnimatedSprite, DisplayObjectEvents} from "pixi.js";
+import { Button } from "../UI/Button";
 
-export class UserInterfaceKeyboard extends Container{
+export class UserInterfaceButton extends Container{
 
+    private botonContinuar: Button;
+    private botonReintentar: Button;
     private morteroAnimated: AnimatedSprite = new AnimatedSprite(
         [
             Texture.from("morteroPosicion1"),
@@ -40,6 +42,30 @@ export class UserInterfaceKeyboard extends Container{
         myStarRight.height = 90;
         myStarRight.width = 90;
         myStarRight.position.set(325,145);
+
+        //Tengo dudas acá
+        const buttonClick = "buttonClick" as keyof DisplayObjectEvents
+        //Tengo dudas acá
+        
+        this.botonContinuar = new Button(
+            Texture.from("botonContinuar"), 
+            Texture.from("botonContinuarPresionado"), 
+            Texture.from("botonContinuarSeleccionado")
+        );
+        this.botonContinuar.on(buttonClick, this.onButtonClickContinuar, this);
+        this.botonContinuar.height=45;
+        this.botonContinuar.width=130;
+        this.botonContinuar.position.set(282,497);
+
+        this.botonReintentar = new Button(
+            Texture.from("botonReintentar"),
+            Texture.from("botonReintentarPresionado"),
+            Texture.from("botonReintentarSeleccionado")
+        );
+        this.botonReintentar.on(buttonClick, this.onButtonClickReintentar, this);
+        this.botonReintentar.height=45;
+        this.botonReintentar.width=130;
+        this.botonReintentar.position.set(138,497);
 
         const cinta = Sprite.from("cinta");
         cinta.height = 80;
@@ -110,42 +136,57 @@ export class UserInterfaceKeyboard extends Container{
         myRectangleRecord.drawRoundedRect(0,0,270,40,10);
         myRectangleRecord.position.set(140,440);
 
-        const textRetryOrContinue = new Text("Presione: \"R\" para Reintentar \n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t \"C\" para Continuar", {
-            fontSize:18, 
-            fill: 0xffffff,
+        const textNext = new Text("Continuar", {
+            fontSize:25, 
+            fill: 0x111111,
             fontFamily:"Bahnschrift",
+            dropShadow: true,
+            dropShadowAngle: Math.PI/6,
+            dropShadowColor: 0xAAAAAA,
+            dropShadowDistance: 1,
         });
-        textRetryOrContinue.position.set(155, 495);
+        textNext.position.set(292, 504);
 
-        Keyboard.down.on("KeyC", this.onKeyC, this);
-        Keyboard.down.on("KeyR", this.onKeyR, this);
+        const textRetry = new Text("Reintentar", {
+            fontSize:25, 
+            fill: 0x111111,
+            fontFamily:"Bahnschrift",
+            dropShadow: true,
+            dropShadowAngle: Math.PI/6,
+            dropShadowColor: 0xAAAAAA,
+            dropShadowDistance: 1,
+        });
+        textRetry.position.set(146, 504);
 
         this.morteroAnimated.animationSpeed = 0.17;
         this.morteroAnimated.scale.set(0.025, 0.025);
         this.morteroAnimated.position.set(390,105);
+        
 
         this.addChild(myPanel);
         this.addChild(myStarCentral);
         this.addChild(myStarLeft);
         this.addChild(myStarRight);
         this.addChild(cinta);
+        this.addChild(this.botonContinuar);
+        this.addChild(this.botonReintentar);
         this.addChild(textLevel);
         this.addChild(textComplete);
         this.addChild(textScore);
         this.addChild(textRecord);
         this.addChild(myRectangleScore);
         this.addChild(myRectangleRecord);
-        this.addChild(textRetryOrContinue);
-
+        this.addChild(textNext);
+        this.addChild(textRetry);
     }
-    
-    private onKeyC():void{
-        console.log("Key \"C\" pressed!");
+
+    private onButtonClickContinuar():void{
+        console.log("Button click continuar!");
         this.morteroAnimated.play();
         this.addChild(this.morteroAnimated);
     }
-    private onKeyR():void{
-        console.log("Key \"R\" pressed!");
+    private onButtonClickReintentar():void{
+        console.log("Button click reintentar!");
         this.morteroAnimated.stop();
         this.removeChild(this.morteroAnimated);
     }

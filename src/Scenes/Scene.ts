@@ -1,5 +1,5 @@
 import { Text, AnimatedSprite, Container, Graphics, Texture} from "pixi.js";
-import { MilitarDisparando } from "./MilitarDisparando";
+import { MilitarDisparando } from "../Game/MilitarDisparando";
 import { UserInterfaceButton } from "./UserInterfaceButton";
 import { UserInterfaceKeyboard } from "./UserInterfaceKeyboard";
 
