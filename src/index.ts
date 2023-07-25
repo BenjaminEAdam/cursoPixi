@@ -1,4 +1,4 @@
-import { Application, Assets } from 'pixi.js'
+import { Application, Assets, Ticker } from 'pixi.js'
 import { Scene } from './Scenes/Scene';
 import { assets } from './assets';
 import { Keyboard } from './Utils/Keyboard';
@@ -11,6 +11,22 @@ const app = new Application({
 	width: 1280,
 	height: 720
 });
+
+export class index {
+
+	private constructor(){}
+	
+	public static screenWidth = app.screen.width;
+	public static screenHeight = app.screen.height;
+	
+	public static scaleWidth = window.innerWidth / this.screenWidth;
+	public static scaleHeight = window.innerHeight/this.screenHeight;
+	public static scaleScreen = Math.min(this.scaleWidth, this.scaleHeight);
+	
+	public static gameWhidth = Math.round(app.screen.width * this.scaleScreen);
+	public static gameHeight = Math.round(app.screen.height * this.scaleScreen);
+	
+}
 
 Keyboard.initialize();
 
@@ -45,4 +61,7 @@ Assets.addBundle("myAssets", assets);
 Assets.loadBundle(["myAssets"]).then(() => {
 	const myScene = new Scene;
 	app.stage.addChild(myScene);
+	Ticker.shared.add(function(deltaFrame){
+		myScene.update(Ticker.shared.deltaMS, deltaFrame);
+	})
 });

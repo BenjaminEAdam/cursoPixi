@@ -1,7 +1,8 @@
 import { Container, NineSlicePlane, Sprite, Texture, Text, Graphics, AnimatedSprite} from "pixi.js";
 import { Keyboard } from "../Utils/Keyboard";
+import { IActualizable } from "../Utils/IActualizable";
 
-export class UserInterfaceKeyboard extends Container{
+export class UserInterfaceKeyboard extends Container implements IActualizable{
 
     private morteroAnimated: AnimatedSprite = new AnimatedSprite(
         [
@@ -13,7 +14,7 @@ export class UserInterfaceKeyboard extends Container{
             Texture.from("morteroPosicion6"),
             Texture.from("morteroPosicion7"),
             Texture.from("morteroPosicion8"),
-        ], true
+        ], false
     );
 
     constructor(){
@@ -137,6 +138,10 @@ export class UserInterfaceKeyboard extends Container{
         this.addChild(myRectangleRecord);
         this.addChild(textRetryOrContinue);
 
+    }
+
+    update(_deltaTime: number, _deltaFrame: number): void {
+        this.morteroAnimated.update(4);
     }
     
     private onKeyC():void{

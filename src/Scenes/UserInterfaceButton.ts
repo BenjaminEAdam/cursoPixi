@@ -1,7 +1,8 @@
 import { Container, NineSlicePlane, Sprite, Texture, Text, Graphics, AnimatedSprite, DisplayObjectEvents} from "pixi.js";
 import { Button } from "../UI/Button";
+import { IActualizable } from "../Utils/IActualizable";
 
-export class UserInterfaceButton extends Container{
+export class UserInterfaceButton extends Container implements IActualizable{
 
     private botonContinuar: Button;
     private botonReintentar: Button;
@@ -15,7 +16,7 @@ export class UserInterfaceButton extends Container{
             Texture.from("morteroPosicion6"),
             Texture.from("morteroPosicion7"),
             Texture.from("morteroPosicion8"),
-        ], true
+        ], false
     );
 
     constructor(){
@@ -178,6 +179,10 @@ export class UserInterfaceButton extends Container{
         this.addChild(myRectangleRecord);
         this.addChild(textNext);
         this.addChild(textRetry);
+    }
+
+    update(_deltaTime: number, _deltaFrame: number): void {
+        this.morteroAnimated.update(2);
     }
 
     private onButtonClickContinuar():void{
