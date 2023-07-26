@@ -21,4 +21,11 @@ export const assets = {
     botonReintentarSeleccionado: "./InterfazUI/Botones/botonReintentarSeleccionado.png",
     botonReintentarPresionado: "./InterfazUI/Botones/botonReintentarPresionado.png",
 
+    soldadoCorriendo1: "./Player/SoldadoCorriendo1.png",
+    soldadoCorriendo2: "./Player/SoldadoCorriendo2.png",
+    soldadoCorriendo3: "./Player/SoldadoCorriendo3.png",
+    soldadoCorriendo4: "./Player/SoldadoCorriendo4.png",
+    soldadoCorriendo5: "./Player/SoldadoCorriendo5.png",
+    soldadoCorriendo6: "./Player/SoldadoCorriendo6.png",
+
 };
