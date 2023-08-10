@@ -10,7 +10,7 @@ import { Player } from "../Game/Player";
 export class Scene extends Container implements IActualizable{
 
     private physicsLogo: PhysicsContainer;
-    private physicsPlayer: PhysicsContainer;
+    private playerSolider: Player;
 
     constructor(){
         super();
@@ -33,19 +33,15 @@ export class Scene extends Container implements IActualizable{
             userInterfaceKeyboard.update(Ticker.shared.deltaMS, deltaFrame);
         })
 
-        const player = new Player();
+        /*const player = new Player();
         Ticker.shared.add(function(deltaFrame){
             player.update(Ticker.shared.deltaMS, deltaFrame);
-        })
+        })*/
 
-        this.physicsPlayer = new PhysicsContainer();
-        this.physicsPlayer.position.set(1, 580);
-        this.physicsPlayer.speed.x = 200;
-        this.physicsPlayer.speed.y = 0;
-        this.physicsPlayer.acceleration.x = 0;
-        this.physicsPlayer.acceleration.y = 0;
-        this.addChild(this.physicsPlayer);
-        this.physicsPlayer.addChild(player);
+        this.playerSolider = new Player();
+        this.playerSolider.position.set(100, 580);
+        this.playerSolider.pivot.set(Math.trunc(this.playerSolider.width)/3, 0);
+        this.addChild(this.playerSolider);
 
         const logoDeCarga = new LogoDeCarga();
         logoDeCarga.scale.set(0.5, 0.5);
@@ -66,6 +62,8 @@ export class Scene extends Container implements IActualizable{
 
     public update(deltaTime: number, _deltaFrame: number): void {
 
+        this.playerSolider.update(deltaTime);
+        
         console.log("Pos x:", Math.trunc(this.physicsLogo.x));
         console.log("Tam x:", Math.trunc(index.screenWidth - this.physicsLogo.width));
 
@@ -91,30 +89,24 @@ export class Scene extends Container implements IActualizable{
         }
 
         // Player
-        let widthPlayer = Math.trunc(this.physicsPlayer.width);
         
-        if(this.physicsPlayer.x >= (index.screenWidth - this.physicsPlayer.width)){
-            this.physicsPlayer.speed.x = this.physicsPlayer.speed.x * (-1);
-            this.physicsPlayer.scale.set(-1, 1);
-            this.physicsPlayer.pivot.set(widthPlayer, 0);
+        if(this.playerSolider.x >= (index.screenWidth - 2*(this.playerSolider.width/3))){
+            this.playerSolider.x = index.screenWidth - 2*(this.playerSolider.width/3);
         }
-        if(this.physicsPlayer.x <= 0){
-            this.physicsPlayer.speed.x = this.physicsPlayer.speed.x * (-1);
-            this.physicsPlayer.scale.set(1, 1);
-            this.physicsPlayer.pivot.set(0, 0);
+        if(this.playerSolider.x <= 0 - 2*(this.playerSolider.width/3)){
+            this.playerSolider.x = 0 - 2*(this.playerSolider.width/3);
         }
-        // Lo siguiente está comentado, ya que no tiene movimiento en y
-        // Si mas adelante se desea agregar movimiento en y se lo descomenta.
-        /*if(this.physicsPlayer.y >= (index.screenHeight - this.physicsPlayer.height)){
-            this.physicsPlayer.speed.y = this.physicsPlayer.speed.y * (-1); 
+        if(this.playerSolider.y >= (index.screenHeight - this.playerSolider.height)){
+            this.playerSolider.y = index.screenHeight - this.playerSolider.height;
+            this.playerSolider.canJump = true;
         }
-        if(this.physicsPlayer.y <= 0){
-            this.physicsPlayer.speed.y = this.physicsPlayer.speed.y * (-1); 
-        }*/
+        if(this.playerSolider.y <= 0){
+            this.playerSolider.y = 0;
+        }
 
         const deltaTimeSeconds = deltaTime / 1000;
         this.physicsLogo.update(deltaTimeSeconds);
-        this.physicsPlayer.update(deltaTimeSeconds);
+        this.playerSolider.update(deltaTimeSeconds);
 
     }
 
