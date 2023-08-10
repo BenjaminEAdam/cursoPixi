@@ -1,16 +1,17 @@
-import { AnimatedSprite, Texture } from "pixi.js";
+import { AnimatedSprite, Graphics, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
 import { Keyboard } from "../Utils/Keyboard";
+import { IHitbox } from "./IHitbox";
 
-export class Player extends PhysicsContainer{
+export class Player extends PhysicsContainer implements IHitbox{
 
     private playerAnimated: AnimatedSprite;
-    private static readonly GRAVITY = 150;
+    private static readonly GRAVITY = 980;
     private static readonly HEADWIND = 0;
     private static readonly SPEED_X = 250;
-    private static readonly SPEED_Y = 250;
+    private static readonly SPEED_Y = 750;
     public canJump = true;
-
+    private hitbox: Graphics;
 
     constructor(){
         super();
@@ -33,6 +34,16 @@ export class Player extends PhysicsContainer{
         this.acceleration.x = Player.HEADWIND;
         this.acceleration.y = Player.GRAVITY;
 
+        this.hitbox = new Graphics();
+        this.hitbox.beginFill(0x0000FF, 0.2);
+        this.hitbox.drawRect(50, 30, 110, 250);
+        this.hitbox.endFill();
+        this.playerAnimated.addChild(this.hitbox);
+
+    }
+
+    getHitbox(): Rectangle {
+        return this.hitbox.getBounds();
     }
 
     public override update(deltaMS: number){
@@ -56,7 +67,10 @@ export class Player extends PhysicsContainer{
         if(Keyboard.state.get("ArrowUp") && this.canJump){
             this.canJump = false;
             this.speed.y = -Player.SPEED_Y;
+            console.log("Entró aca");
         }
+
+        //Si está fuera de una plataforma entonces no puede saltar.
 
     }
 }

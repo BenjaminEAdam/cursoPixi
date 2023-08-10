@@ -1,74 +1,83 @@
-import { Text, Container, Ticker} from "pixi.js";
-import { UserInterfaceButton } from "./UserInterfaceButton";
-import { UserInterfaceKeyboard } from "./UserInterfaceKeyboard";
+import { Container} from "pixi.js";
 import { IActualizable } from "../Utils/IActualizable";
 import { LogoDeCarga } from "./LogoDeCarga";
 import { index } from "..";
-import { PhysicsContainer } from "../Game/PhysicsContainer";
 import { Player } from "../Game/Player";
+import { Plataform } from "../Game/Plataform";
+import { checkCollision } from "../Game/IHitbox";
 
 export class Scene extends Container implements IActualizable{
 
-    private physicsLogo: PhysicsContainer;
+    private physicsLogo: LogoDeCarga;
     private playerSolider: Player;
+    private plataforms: Plataform[];
 
     constructor(){
         super();
 
-        const myText = new Text("Cargando...", {fontSize:40, fill: 0xEEEEEE, fontFamily:"Arial"});
-        myText.position.set(925, 650);
-        this.addChild(myText);
+        this.plataforms = [];
 
-        const userInterfaceButton = new UserInterfaceButton();
-        userInterfaceButton.position.set(100,10);
-        this.addChild(userInterfaceButton);
-        Ticker.shared.add(function(deltaFrame){
-            userInterfaceButton.update(Ticker.shared.deltaMS, deltaFrame);
-        })
+        const plataforma1 = new Plataform();
+        plataforma1.position.set(350, 500);
+        plataforma1.scale.set(0.1, 0.1);
+        this.addChild(plataforma1);
+        this.plataforms.push(plataforma1);
 
-        const userInterfaceKeyboard = new UserInterfaceKeyboard();
-        userInterfaceKeyboard.position.set(600, 10);
-        this.addChild(userInterfaceKeyboard);
-        Ticker.shared.add(function(deltaFrame){
-            userInterfaceKeyboard.update(Ticker.shared.deltaMS, deltaFrame);
-        })
-
-        /*const player = new Player();
-        Ticker.shared.add(function(deltaFrame){
-            player.update(Ticker.shared.deltaMS, deltaFrame);
-        })*/
+        const plataforma2 = new Plataform();
+        plataforma2.position.set(850, 400);
+        plataforma2.scale.set(0.1, 0.1);
+        this.addChild(plataforma2);
+        this.plataforms.push(plataforma2);
 
         this.playerSolider = new Player();
         this.playerSolider.position.set(100, 580);
         this.playerSolider.pivot.set(Math.trunc(this.playerSolider.width)/3, 0);
         this.addChild(this.playerSolider);
 
-        const logoDeCarga = new LogoDeCarga();
-        logoDeCarga.scale.set(0.5, 0.5);
-        Ticker.shared.add(function(deltaFrame){
-            logoDeCarga.update(Ticker.shared.deltaMS, deltaFrame);
-        })
-
-        this.physicsLogo = new PhysicsContainer();
+        this.physicsLogo = new LogoDeCarga();
         this.physicsLogo.position.set(1200, 650);
-        this.physicsLogo.speed.x = 100;
-        this.physicsLogo.speed.y = -280;
-        this.physicsLogo.acceleration.x = 0;
-        this.physicsLogo.acceleration.y = 60;
+        this.physicsLogo.scale.set(0.5, 0.5);
         this.addChild(this.physicsLogo);
-        this.physicsLogo.addChild(logoDeCarga);
 
     }
 
     public update(deltaTime: number, _deltaFrame: number): void {
-
-        this.playerSolider.update(deltaTime);
         
-        console.log("Pos x:", Math.trunc(this.physicsLogo.x));
-        console.log("Tam x:", Math.trunc(index.screenWidth - this.physicsLogo.width));
+        this.playerSolider.update(deltaTime/2);
+        this.physicsLogo.update(deltaTime/2);
+        
+        /*
+        console.log("Personaje y Piso1", checkCollision(this.playerSolider, this.plataforms[0]));
+        console.log("Personaje y Piso2", checkCollision(this.playerSolider, this.plataforms[1]));
+        console.log("Logo y Piso1", checkCollision(this.physicsLogo, this.plataforms[0]));
+        console.log("Logo y Piso2", checkCollision(this.physicsLogo, this.plataforms[1]));
+        console.log("Personaje y Logo", checkCollision(this.physicsLogo, this.playerSolider));
+        */
 
-        console.log("Pos y:", Math.trunc(this.physicsLogo.y));
-        console.log("Tam y:", Math.trunc(index.screenHeight - this.physicsLogo.height));
+
+        for (let plataform of this.plataforms){
+            const overlap = checkCollision(this.playerSolider, plataform);
+            if( overlap != null){
+                if(overlap.width < overlap.height){
+                    if(this.playerSolider.x > plataform.x){
+                        this.playerSolider.x += overlap.width;
+                    }
+                    else if(this.playerSolider.x < plataform.x){
+                        this.playerSolider.x -= overlap.width;
+                    }
+                }
+                else{ 
+                    this.playerSolider.speed.y = 0;
+                    if(this.playerSolider.y > plataform.y){
+                        this.playerSolider.y += overlap.height;
+                    }
+                    else if(this.playerSolider.y < plataform.y){
+                        this.playerSolider.y -= overlap.height;
+                        this.playerSolider.canJump = true;
+                    }
+                }
+            }
+        }
 
         // Si speed en Y negativa (-) y X positiva (+) logo va hacia arriba y hacia la derecha.
         // Si speed en Y negativa (-) y X negativa (-) logo va hacia arriba y hacia la izquierda.
@@ -98,16 +107,15 @@ export class Scene extends Container implements IActualizable{
         }
         if(this.playerSolider.y >= (index.screenHeight - this.playerSolider.height)){
             this.playerSolider.y = index.screenHeight - this.playerSolider.height;
+            this.playerSolider.speed.y = 0;
             this.playerSolider.canJump = true;
         }
         if(this.playerSolider.y <= 0){
             this.playerSolider.y = 0;
         }
 
-        const deltaTimeSeconds = deltaTime / 1000;
-        this.physicsLogo.update(deltaTimeSeconds);
-        this.playerSolider.update(deltaTimeSeconds);
+        this.playerSolider.update(deltaTime/2);
+        this.physicsLogo.update(deltaTime/2);
 
     }
-
 }
