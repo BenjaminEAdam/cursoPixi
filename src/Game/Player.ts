@@ -10,7 +10,7 @@ export class Player extends PhysicsContainer implements IHitbox{
     private static readonly HEADWIND = 0;
     private static readonly SPEED_X = 250;
     private static readonly SPEED_Y = 750;
-    public canJump = true;
+    public inPlataform = true;
     private hitbox: Graphics;
 
     constructor(){
@@ -53,24 +53,22 @@ export class Player extends PhysicsContainer implements IHitbox{
         this.playerAnimated.update(deltaMS / (1000/60));
 
         //Movimiento horizantal
-        if(Keyboard.state.get("ArrowRight")){
+        if(Keyboard.state.get("ArrowRight") && this.inPlataform){
             this.speed.x = Player.SPEED_X;
             this.scale.set(1, 1);
-        }else if(Keyboard.state.get("ArrowLeft")){
+        }else if(Keyboard.state.get("ArrowLeft") && this.inPlataform){
             this.speed.x = -Player.SPEED_X;
             this.scale.set(-1, 1);
-            //this.pivot.set(Math.trunc(this.width), 0);
         }else{
-            this.speed.x = 0;
+            if(this.inPlataform){
+                this.speed.x = 0;
+            }
+            
         }
         //Movimiento vertical
-        if(Keyboard.state.get("ArrowUp") && this.canJump){
-            this.canJump = false;
+        if(Keyboard.state.get("ArrowUp") && this.inPlataform){
+            this.inPlataform = false;
             this.speed.y = -Player.SPEED_Y;
-            console.log("Entró aca");
         }
-
-        //Si está fuera de una plataforma entonces no puede saltar.
-
     }
 }

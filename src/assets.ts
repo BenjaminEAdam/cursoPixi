@@ -28,6 +28,7 @@ export const assets = {
     soldadoCorriendo5: "./Player/SoldadoCorriendo5.png",
     soldadoCorriendo6: "./Player/SoldadoCorriendo6.png",
 
-    plataforma: "./Plataforma/plataforma.png"
+    plataforma: "./Plataforma/plataforma.png",
+    piso: "./Plataforma/piso.png",
 
 };

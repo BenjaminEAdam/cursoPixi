@@ -17,17 +17,23 @@ export class Scene extends Container implements IActualizable{
 
         this.plataforms = [];
 
-        const plataforma1 = new Plataform();
+        const plataforma1 = new Plataform("plataforma");
         plataforma1.position.set(350, 500);
         plataforma1.scale.set(0.1, 0.1);
         this.addChild(plataforma1);
         this.plataforms.push(plataforma1);
 
-        const plataforma2 = new Plataform();
+        const plataforma2 = new Plataform("plataforma");
         plataforma2.position.set(850, 400);
         plataforma2.scale.set(0.1, 0.1);
         this.addChild(plataforma2);
         this.plataforms.push(plataforma2);
+
+        const piso = new Plataform("piso");
+        piso.position.set(0, 705);
+        piso.scale.set(0.43, 0.43);
+        this.addChild(piso);
+        this.plataforms.push(piso);
 
         this.playerSolider = new Player();
         this.playerSolider.position.set(100, 580);
@@ -54,15 +60,16 @@ export class Scene extends Container implements IActualizable{
         console.log("Personaje y Logo", checkCollision(this.physicsLogo, this.playerSolider));
         */
 
-
+        let countExitPlat = 0;
         for (let plataform of this.plataforms){
             const overlap = checkCollision(this.playerSolider, plataform);
             if( overlap != null){
-                if(overlap.width < overlap.height){
-                    if(this.playerSolider.x > plataform.x){
+                if(overlap.width <= overlap.height){
+                    this.playerSolider.speed.x = 0;
+                    if(this.playerSolider.x >= plataform.x){
                         this.playerSolider.x += overlap.width;
                     }
-                    else if(this.playerSolider.x < plataform.x){
+                    else if(this.playerSolider.x <= plataform.x){
                         this.playerSolider.x -= overlap.width;
                     }
                 }
@@ -73,12 +80,31 @@ export class Scene extends Container implements IActualizable{
                     }
                     else if(this.playerSolider.y < plataform.y){
                         this.playerSolider.y -= overlap.height;
-                        this.playerSolider.canJump = true;
+                        this.playerSolider.inPlataform = true;
                     }
                 }
+            }else{
+                countExitPlat++;
             }
         }
+        // Si está fuera de TODAS las plataformas entonces está fuera de plataforma.
+        if(countExitPlat==this.plataforms.length){
+            this.playerSolider.inPlataform = false;
+        }
 
+        // Player
+        
+        if(this.playerSolider.x >= (index.screenWidth - 2*(this.playerSolider.width/3))){
+            this.playerSolider.x = index.screenWidth - 2*(this.playerSolider.width/3);
+        }
+        if(this.playerSolider.x <= 0 - 2*(this.playerSolider.width/3)){
+            this.playerSolider.x = 0 - 2*(this.playerSolider.width/3);
+        }
+        if(this.playerSolider.y <= 0){
+            this.playerSolider.y = 0;
+        }
+
+        //Logo
         // Si speed en Y negativa (-) y X positiva (+) logo va hacia arriba y hacia la derecha.
         // Si speed en Y negativa (-) y X negativa (-) logo va hacia arriba y hacia la izquierda.
         // Si speed en Y positiva (+) y X negativa (-) logo va hacia abajo y hacia la izquierda.
@@ -97,22 +123,8 @@ export class Scene extends Container implements IActualizable{
             this.physicsLogo.speed.y = this.physicsLogo.speed.y * (-1);
         }
 
-        // Player
-        
-        if(this.playerSolider.x >= (index.screenWidth - 2*(this.playerSolider.width/3))){
-            this.playerSolider.x = index.screenWidth - 2*(this.playerSolider.width/3);
-        }
-        if(this.playerSolider.x <= 0 - 2*(this.playerSolider.width/3)){
-            this.playerSolider.x = 0 - 2*(this.playerSolider.width/3);
-        }
-        if(this.playerSolider.y >= (index.screenHeight - this.playerSolider.height)){
-            this.playerSolider.y = index.screenHeight - this.playerSolider.height;
-            this.playerSolider.speed.y = 0;
-            this.playerSolider.canJump = true;
-        }
-        if(this.playerSolider.y <= 0){
-            this.playerSolider.y = 0;
-        }
+
+
 
         this.playerSolider.update(deltaTime/2);
         this.physicsLogo.update(deltaTime/2);
