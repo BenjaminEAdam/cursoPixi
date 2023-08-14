@@ -64,25 +64,7 @@ export class Scene extends Container implements IActualizable{
         for (let plataform of this.plataforms){
             const overlap = checkCollision(this.playerSolider, plataform);
             if( overlap != null){
-                if(overlap.width <= overlap.height){
-                    this.playerSolider.speed.x = 0;
-                    if(this.playerSolider.x >= plataform.x){
-                        this.playerSolider.x += overlap.width;
-                    }
-                    else if(this.playerSolider.x <= plataform.x){
-                        this.playerSolider.x -= overlap.width;
-                    }
-                }
-                else{ 
-                    this.playerSolider.speed.y = 0;
-                    if(this.playerSolider.y > plataform.y){
-                        this.playerSolider.y += overlap.height;
-                    }
-                    else if(this.playerSolider.y < plataform.y){
-                        this.playerSolider.y -= overlap.height;
-                        this.playerSolider.inPlataform = true;
-                    }
-                }
+                this.playerSolider.separate(overlap, plataform.position);
             }else{
                 countExitPlat++;
             }
@@ -122,9 +104,6 @@ export class Scene extends Container implements IActualizable{
         if(this.physicsLogo.y <= 0){
             this.physicsLogo.speed.y = this.physicsLogo.speed.y * (-1);
         }
-
-
-
 
         this.playerSolider.update(deltaTime/2);
         this.physicsLogo.update(deltaTime/2);

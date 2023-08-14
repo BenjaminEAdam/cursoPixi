@@ -1,4 +1,4 @@
-import { AnimatedSprite, Graphics, Rectangle, Texture } from "pixi.js";
+import { AnimatedSprite, Graphics, ObservablePoint, Rectangle, Texture } from "pixi.js";
 import { PhysicsContainer } from "./PhysicsContainer";
 import { Keyboard } from "../Utils/Keyboard";
 import { IHitbox } from "./IHitbox";
@@ -11,6 +11,7 @@ export class Player extends PhysicsContainer implements IHitbox{
     private static readonly SPEED_X = 250;
     private static readonly SPEED_Y = 750;
     public inPlataform = true;
+    public jumped = false;
     private hitbox: Graphics;
 
     constructor(){
@@ -28,7 +29,7 @@ export class Player extends PhysicsContainer implements IHitbox{
         );
         this.playerAnimated.animationSpeed = 0.15;
         this.playerAnimated.scale.set(0.5, 0.5);
-        this.playerAnimated.play();
+        //this.playerAnimated.play();
         this.addChild(this.playerAnimated);
         
         this.acceleration.x = Player.HEADWIND;
@@ -42,10 +43,6 @@ export class Player extends PhysicsContainer implements IHitbox{
 
     }
 
-    getHitbox(): Rectangle {
-        return this.hitbox.getBounds();
-    }
-
     public override update(deltaMS: number){
         
         super.update(deltaMS/1000);
@@ -56,19 +53,59 @@ export class Player extends PhysicsContainer implements IHitbox{
         if(Keyboard.state.get("ArrowRight") && this.inPlataform){
             this.speed.x = Player.SPEED_X;
             this.scale.set(1, 1);
+            this.playerAnimated.play();
         }else if(Keyboard.state.get("ArrowLeft") && this.inPlataform){
             this.speed.x = -Player.SPEED_X;
             this.scale.set(-1, 1);
+            this.playerAnimated.play();
         }else{
             if(this.inPlataform){
                 this.speed.x = 0;
             }
-            
+            this.playerAnimated.stop();
         }
         //Movimiento vertical
         if(Keyboard.state.get("ArrowUp") && this.inPlataform){
             this.inPlataform = false;
             this.speed.y = -Player.SPEED_Y;
+            
+        }
+
+        if(!this.inPlataform){
+            this.playerAnimated.gotoAndStop(5);
+            this.jumped = true;
+        }
+        if(this.inPlataform && this.jumped){
+            this.playerAnimated.gotoAndPlay(0);
+            this.jumped = false;
+        }
+
+    }
+
+    getHitbox(): Rectangle {
+        return this.hitbox.getBounds();
+    }
+
+    public separate(overlap: Rectangle, plataform: ObservablePoint<any>) {
+        
+        if(overlap.width <= overlap.height){
+            this.speed.x = 0;
+            if(this.x >= plataform.x){
+                this.x += overlap.width;
+            }
+            else if(this.x <= plataform.x){
+                this.x -= overlap.width;
+            }
+        }
+        else{ 
+            this.speed.y = 0;
+            if(this.y > plataform.y){
+                this.y += overlap.height;
+            }
+            else if(this.y < plataform.y){
+                this.y -= overlap.height;
+                this.inPlataform = true;
+            }
         }
     }
 }
