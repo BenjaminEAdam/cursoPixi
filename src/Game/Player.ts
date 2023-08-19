@@ -27,7 +27,7 @@ export class Player extends PhysicsContainer implements IHitbox{
                 Texture.from("soldadoCorriendo6"),
             ], false
         );
-        this.playerAnimated.animationSpeed = 0.15;
+        this.playerAnimated.animationSpeed = 0.18;
         this.playerAnimated.scale.set(0.5, 0.5);
         //this.playerAnimated.play();
         this.addChild(this.playerAnimated);

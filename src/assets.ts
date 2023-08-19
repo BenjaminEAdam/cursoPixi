@@ -28,7 +28,12 @@ export const assets = {
     soldadoCorriendo5: "./Player/SoldadoCorriendo5.png",
     soldadoCorriendo6: "./Player/SoldadoCorriendo6.png",
 
-    plataforma: "./Plataforma/plataforma.png",
-    piso: "./Plataforma/piso.png",
+    plataforma_tierra: "./Plataforma/plataforma.png",
+    piso_tierra: "./Plataforma/piso.png",
+    plataforma_piedra: "./Plataforma/Plataforma de piedra.png",
+    piso_piedra: "./Plataforma/Piso de piedra.png",
+    fondoDesierto: "./Fondo/background_desert.jpg",
+    fondoCiudad: "./Fondo/background_city.jpg"
+    
 
 };
