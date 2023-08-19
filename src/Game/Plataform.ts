@@ -5,11 +5,13 @@ import { PhysicsContainer } from "./PhysicsContainer";
 export class Plataform extends PhysicsContainer implements IHitbox{
 
     private hitbox : Graphics;
+    public isFloor : Boolean;
     
     constructor(typePlat : string){
         super();
         
         this.hitbox = new Graphics();
+        this.isFloor = false;
 
         if(typePlat == "plataforma_tierra"){
             const plataforma = Sprite.from("plataforma_tierra");
@@ -21,6 +23,7 @@ export class Plataform extends PhysicsContainer implements IHitbox{
             this.addChild(this.hitbox);
         }
         else if(typePlat == "piso_tierra"){
+            this.isFloor = true;
             const piso = Sprite.from("piso_tierra");
             this.addChild(piso);
 
@@ -38,6 +41,7 @@ export class Plataform extends PhysicsContainer implements IHitbox{
             this.addChild(this.hitbox);
         }
         else if(typePlat == "piso_piedra"){
+            this.isFloor = true;
             const piso = Sprite.from("piso_piedra");
             this.addChild(piso);
 

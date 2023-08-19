@@ -5,11 +5,11 @@ import { IHitbox } from "./IHitbox";
 
 export class Player extends PhysicsContainer implements IHitbox{
 
-    private playerAnimated: AnimatedSprite;
-    private static readonly GRAVITY = 980;
+    public playerAnimated: AnimatedSprite;
+    private static readonly GRAVITY = 1800;
     private static readonly HEADWIND = 0;
-    private static readonly SPEED_X = 250;
-    private static readonly SPEED_Y = 750;
+    private static readonly SPEED_X = 0;
+    private static readonly SPEED_Y = 900;
     public inPlataform = true;
     public jumped = false;
     private hitbox: Graphics;
@@ -27,9 +27,9 @@ export class Player extends PhysicsContainer implements IHitbox{
                 Texture.from("soldadoCorriendo6"),
             ], false
         );
-        this.playerAnimated.animationSpeed = 0.18;
+        this.playerAnimated.animationSpeed = 0.1;
         this.playerAnimated.scale.set(0.5, 0.5);
-        //this.playerAnimated.play();
+        this.playerAnimated.play();
         this.addChild(this.playerAnimated);
         
         this.acceleration.x = Player.HEADWIND;
@@ -62,7 +62,7 @@ export class Player extends PhysicsContainer implements IHitbox{
             if(this.inPlataform){
                 this.speed.x = 0;
             }
-            this.playerAnimated.stop();
+            //this.playerAnimated.stop();
         }
         //Movimiento vertical
         if(Keyboard.state.get("ArrowUp") && this.inPlataform){
