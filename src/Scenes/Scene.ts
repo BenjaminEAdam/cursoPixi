@@ -4,6 +4,8 @@ import { Player } from "../Game/Player";
 import { Plataform } from "../Game/Plataform";
 import { checkCollision } from "../Game/IHitbox";
 import { BoxArmed } from "../Game/BoxArmed";
+import { BoxAmmunition } from "../Game/BoxAmmunition";
+import { Coffer } from "../Game/Coffer";
 
 export class Scene extends Container implements IActualizable{
 
@@ -47,6 +49,22 @@ export class Scene extends Container implements IActualizable{
         const caja_armada2 = new BoxArmed(2);
         caja_armada2.position.set(800,555);
         this.addChild(caja_armada2);
+
+        const caja_municion1 = new BoxAmmunition(1);
+        caja_municion1.position.set(587, 300);
+        this.addChild(caja_municion1);
+
+        const caja_municion2 = new BoxAmmunition(2);
+        caja_municion2.position.set(787, 450);
+        this.addChild(caja_municion2);
+
+        const cofre1 = new Coffer();
+        cofre1.position.set(600, 493);
+        this.addChild(cofre1);
+
+        const cofre2 = new Coffer();
+        cofre2.position.set(800, 300);
+        this.addChild(cofre2);
 
     }
 
