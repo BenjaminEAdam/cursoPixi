@@ -39,6 +39,7 @@ export const assets = {
     cajaMilitar: "./Objetos/caja_militar.png",
     cofre: "./Objetos/cofre.png",
     pinche: "./Objetos/pinche.png",
+    bala: "./Objetos/bala1.png"
     
 
 };

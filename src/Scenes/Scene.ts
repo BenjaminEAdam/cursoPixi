@@ -3,14 +3,16 @@ import { IActualizable } from "../Utils/IActualizable";
 import { Player } from "../Game/Player";
 import { Plataform } from "../Game/Plataform";
 import { checkCollision } from "../Game/IHitbox";
-import { BoxArmed } from "../Game/BoxArmed";
-import { BoxAmmunition } from "../Game/BoxAmmunition";
-import { Coffer } from "../Game/Coffer";
+//import { BoxArmed } from "../Game/BoxArmed";
+//import { BoxAmmunition } from "../Game/BoxAmmunition";
+//import { Coffer } from "../Game/Coffer";
+import { DynamicObject } from "../Game/DynamicObject";
+import { Bullet } from "../Game/Bullet";
 
 export class Scene extends Container implements IActualizable{
 
     private playerSoldier: Player;
-    private plataforms: Plataform[];
+    private dynamicObjects: DynamicObject[];
     private world: Container;
     private background: TilingSprite;
     private gameSpeed: number = 200;
@@ -23,17 +25,17 @@ export class Scene extends Container implements IActualizable{
         this.background = new TilingSprite(Texture.from("fondoCiudad"), 1920, 696);
         this.addChild(this.background);
 
-        this.plataforms = [];
+        this.dynamicObjects = [];
 
         let piso = new Plataform("piso_piedra");
         piso.position.set(0, 637);
         this.world.addChild(piso);
-        this.plataforms.push(piso);
+        this.dynamicObjects.push(piso);
 
         piso = new Plataform("piso_piedra");
         piso.position.set(787, 637);
         this.world.addChild(piso);
-        this.plataforms.push(piso);
+        this.dynamicObjects.push(piso);
 
         this.playerSoldier = new Player();
         this.playerSoldier.position.set(400, 500);
@@ -42,7 +44,7 @@ export class Scene extends Container implements IActualizable{
 
         this.addChild(this.world);
 
-        const caja_armada1 = new BoxArmed(1);
+        /*const caja_armada1 = new BoxArmed(1);
         caja_armada1.position.set(600,555);
         this.addChild(caja_armada1);
 
@@ -64,7 +66,11 @@ export class Scene extends Container implements IActualizable{
 
         const cofre2 = new Coffer();
         cofre2.position.set(800, 300);
-        this.addChild(cofre2);
+        this.addChild(cofre2);*/
+
+        const bala = new Bullet();
+        bala.position.set(467, 551);
+        this.addChild(bala);
 
     }
 
@@ -78,11 +84,21 @@ export class Scene extends Container implements IActualizable{
             
             //Ir agregando obstáculos
 
+            /*const caja_armada1 = new BoxArmed(1);
+            caja_armada1.position.set(1280,555);
+            this.world.addChild(caja_armada1);
+            this.dynamicObjects.push(caja_armada1);
+
+            const cofre1 = new Coffer();
+            cofre1.position.set(1280, 493);
+            this.world.addChild(cofre1);
+            this.dynamicObjects.push(cofre1);*/
+
 
         }
 
         let countExitPlat = 0;
-        for (let plataform of this.plataforms){
+        for (let plataform of this.dynamicObjects){
             plataform.speed.x = -this.gameSpeed;
             plataform.update(deltaTime/1000);
             const overlap = checkCollision(this.playerSoldier, plataform);
@@ -97,18 +113,18 @@ export class Scene extends Container implements IActualizable{
             }
         }
         // Si está fuera de TODAS las plataformas entonces está fuera de plataforma.
-        if(countExitPlat==this.plataforms.length){
+        if(countExitPlat==this.dynamicObjects.length){
             this.playerSoldier.inPlataform = false;
         }
         // Si la plataforma fué destruida sacarla de la lista de plataformas
-        this.plataforms = this.plataforms.filter((elem) => !elem.destroyed);
+        this.dynamicObjects = this.dynamicObjects.filter((elem) => !elem.destroyed);
 
-        const plataformsFloors = this.plataforms.filter((elem) => elem.isFloor);
+        const plataformsFloors = this.dynamicObjects.filter((elem) => elem.isFloor);
         if(plataformsFloors.length == 2){
             const piso = new Plataform("piso_piedra");
             piso.position.set(1570, 637);
             this.world.addChild(piso);
-            this.plataforms.push(piso);
+            this.dynamicObjects.push(piso);
         }
 
         // Player

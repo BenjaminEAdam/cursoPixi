@@ -1,15 +1,16 @@
 import { Graphics, Rectangle, Sprite } from "pixi.js";
-import { IHitbox } from "./IHitbox";
-import { PhysicsContainer } from "./PhysicsContainer";
 import { Spearheads } from "./Spearheads";
+import { DynamicObject } from "./DynamicObject";
 
-export class BoxAmmunition extends PhysicsContainer implements IHitbox{
+export class BoxAmmunition extends DynamicObject{
     
+    public override isFloor: Boolean; 
     private hitbox: Graphics;
     
     constructor(number : number){
         super();
 
+        this.isFloor = false;
         this.hitbox = new Graphics();
         const box = Sprite.from("cajaMilitar");
         box.scale.set(0.09,0.09);
@@ -52,7 +53,7 @@ export class BoxAmmunition extends PhysicsContainer implements IHitbox{
         this.addChild(box);
         this.addChild(this.hitbox);
     }
-    getHitbox(): Rectangle {
+    override getHitbox(): Rectangle {
         return this.hitbox.getBounds();
     }
 
