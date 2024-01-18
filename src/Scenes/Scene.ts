@@ -66,11 +66,18 @@ export class Scene extends Container implements IActualizable{
 
         const cofre2 = new Coffer();
         cofre2.position.set(800, 300);
-        this.addChild(cofre2);*/
+        this.addChild(cofre2);
+        
+        const ui = new UserInterfaceButton();
+        ui.position.set(100,100);
+        this.addChild(ui);
+        */
 
         const bala = new Bullet();
         bala.position.set(467, 551);
         this.addChild(bala);
+
+        
 
     }
 
